@@ -4,19 +4,44 @@ const router = express.Router();
 
 const User = require("../models/Users");
 
+const bcryptjs = require("bcryptjs");
+
+const jwt = require("jsonwebtoken");
+
+const SECRET_KEY = "asimisadeveloper";
+
 // creating a new user -> Sign up
 
 router.post("/createuser", async (req, res) => {
   try {
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-    });
+    const salt = await bcryptjs.genSalt(10);
 
-    const newUser = await user.save();
+    const hashPassword = await bcryptjs.hash(req.body.password, salt);
 
-    res.send(newUser);
+    const email = await User.findOne({ email: req.body.email });
+
+    if (email) {
+      res.status(400).send("This email is already exists");
+    } else {
+      const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashPassword,
+      });
+
+      const newUser = await user.save();
+
+      const data = {
+        user: {
+          id: newUser._id,
+        },
+      };
+
+      const authToken = await jwt.sign(data, SECRET_KEY);
+
+      console.log(authToken);
+      res.json({ newUser, authToken });
+    }
   } catch (error) {
     res.status(400).send(error);
   }
@@ -34,6 +59,32 @@ router.get("/fetchuser", async (req, res) => {
   }
 });
 
-// updating the user
+// login the user
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    console.log();
+    const verfiyPass = await bcryptjs.compare(req.body.password, user.password);
+
+    console.log(verfiyPass);
+    if (verfiyPass && user) {
+      const data = {
+        user: {
+          id: user._id,
+        },
+      };
+
+      const authToken = await jwt.sign(data, SECRET_KEY);
+
+      console.log(authToken);
+      res.json({ user, authToken });
+    } else {
+      res.status(400).json("invalid credentials");
+    }
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 module.exports = router;
