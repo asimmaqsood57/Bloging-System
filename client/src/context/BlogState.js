@@ -3,13 +3,14 @@ import BlogContext from "./BlogContext";
 import React from "react";
 
 const BlogState = (props) => {
-  const checked = "asim";
-  const checked1 = () => {
-    // console.log("you can write anything here");
+  const checked = {
+    title: "Software Developer",
+    description:
+      "We are software developers. Our work is to  build new softwares",
   };
 
   return (
-    <BlogContext.Provider value={{ checked, checked1 }}>
+    <BlogContext.Provider value={{ checked }}>
       {props.children}
     </BlogContext.Provider>
   );
