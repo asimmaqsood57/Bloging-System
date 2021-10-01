@@ -3,7 +3,17 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import { useState } from "react";
 const AddBlog = () => {
+  const [blog, setblog] = useState({
+    title: "",
+    description: "",
+  });
+
+  const onchange = (e) => {
+    setblog({ ...blog, [e.target.name]: e.target.value });
+  };
+
   return (
     <>
       <Container maxWidth="sm">
@@ -15,7 +25,14 @@ const AddBlog = () => {
             maxWidth: "100%",
           }}
         >
-          <TextField fullWidth label="Blog Title" id="fullWidth" />
+          <TextField
+            fullWidth
+            label="Blog Title"
+            value={blog.title}
+            name="title"
+            onChange={onchange}
+            id="fullWidth"
+          />
 
           <h1>Blog Description</h1>
 
@@ -27,6 +44,9 @@ const AddBlog = () => {
             label="Blog Content"
             multiline
             fullWidth
+            name="description"
+            value={blog.description}
+            onChange={onchange}
             variant="outlined"
             rows={5}
           />
