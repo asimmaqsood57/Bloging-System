@@ -16,13 +16,26 @@ import Tooltip from "@mui/material/Tooltip";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-
+import UserContext from "../context/userContext";
 import { Link, useHistory } from "react-router-dom";
 export default function NavBar() {
   const history = useHistory();
 
+  const context = React.useContext(UserContext);
+
+  console.log(context);
+
+  const { user, fetchUserData } = context;
+
+  const userID = localStorage.getItem("userID");
+
+  if (localStorage.getItem("token")) {
+    fetchUserData(userID);
+  }
+
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userID");
 
     history.push("/login");
   };
@@ -124,12 +137,18 @@ export default function NavBar() {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem>
-              <Avatar /> Profile
-            </MenuItem>
-            <MenuItem>
-              <Avatar /> My account
-            </MenuItem>
+            {localStorage.getItem("token") ? (
+              <>
+                <MenuItem>
+                  <Avatar /> {user.name}
+                </MenuItem>
+                <MenuItem>
+                  <Avatar /> My account
+                </MenuItem>
+              </>
+            ) : (
+              ""
+            )}
             <Divider />
             <MenuItem>
               <ListItemIcon>

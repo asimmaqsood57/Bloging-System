@@ -52,9 +52,9 @@ router.post("/createuser", async (req, res) => {
 
 // fetching a new user
 
-router.get("/fetchuser", async (req, res) => {
+router.get("/fetchuser/:id", async (req, res) => {
   try {
-    const usersData = await User.find();
+    const usersData = await User.findById(req.params.id);
 
     res.status(200).json(usersData);
   } catch (error) {

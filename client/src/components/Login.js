@@ -52,6 +52,7 @@ export default function Login() {
 
     if (json.success) {
       localStorage.setItem("token", json.authToken);
+      localStorage.setItem("userID", json.user._id);
 
       history.push("/");
     }
