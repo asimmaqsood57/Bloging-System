@@ -15,7 +15,7 @@ const BlogState = (props) => {
   const blogsIntitialState = [];
 
   const [blogs, setblogs] = useState(blogsIntitialState);
-
+  // fetching blogs from database
   const getBlogs = async () => {
     const response = await fetch(`${host}/api/blog/fetchallblogs`, {
       method: "GET",
@@ -31,8 +31,34 @@ const BlogState = (props) => {
     setblogs(json);
   };
 
+  // add a blog
+
+  const addBlog = async (title, description) => {
+    const data = {
+      title,
+      description,
+    };
+
+    const response = await fetch(`${host}/api/blog/addblog`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE0ZWQwNTA5YjM5MWQ0ZDVlYjRmNjg3In0sImlhdCI6MTYzMzEwODQ5OX0.Wefgee7TmaGzKjooxe-acPLSDIlpGpXbJPoaKvxVWpg",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const json = await response.json();
+    console.log(json);
+
+    let blog = json;
+
+    setblogs(blogs.concat(blog));
+  };
+
   return (
-    <BlogContext.Provider value={{ checked, getBlogs, blogs }}>
+    <BlogContext.Provider value={{ checked, getBlogs, blogs, addBlog }}>
       {props.children}
     </BlogContext.Provider>
   );

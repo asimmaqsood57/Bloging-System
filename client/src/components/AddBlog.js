@@ -3,15 +3,27 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import BlogContext from "../context/BlogContext";
+import { useState, useContext } from "react";
 const AddBlog = () => {
   const [blog, setblog] = useState({
     title: "",
     description: "",
   });
 
+  const context = useContext(BlogContext);
+
+  const { addBlog } = context;
+
   const onchange = (e) => {
     setblog({ ...blog, [e.target.name]: e.target.value });
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    addBlog(blog.title, blog.description);
+    console.log("you have posted something");
   };
 
   return (
@@ -52,7 +64,7 @@ const AddBlog = () => {
           />
         </Box>
 
-        <Button variant="outlined" sx={{ mt: 2 }}>
+        <Button variant="outlined" onClick={handleClick} sx={{ mt: 2 }}>
           POST
         </Button>
       </Container>
