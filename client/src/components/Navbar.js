@@ -43,16 +43,30 @@ export default function NavBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Bloger
           </Typography>
-          <Link style={{ color: "white", textDecoration: "none" }} to="/login">
-            <Button color="inherit" sx={{ mr: 1 }}>
-              Login
-            </Button>
-          </Link>
-          <Link style={{ color: "white", textDecoration: "none" }} to="/signup">
-            <Button color="inherit" sx={{ mr: 1 }}>
-              Sign up
-            </Button>
-          </Link>
+
+          {!localStorage.getItem("token") ? (
+            <>
+              <Link
+                style={{ color: "white", textDecoration: "none" }}
+                to="/login"
+              >
+                <Button color="inherit" sx={{ mr: 1 }}>
+                  Login
+                </Button>
+              </Link>
+              <Link
+                style={{ color: "white", textDecoration: "none" }}
+                to="/signup"
+              >
+                <Button color="inherit" sx={{ mr: 1 }}>
+                  Sign up
+                </Button>
+              </Link>
+            </>
+          ) : (
+            ""
+          )}
+
           <Link style={{ color: "white", textDecoration: "none" }} to="/">
             <Typography>Home</Typography>
           </Link>
@@ -121,12 +135,16 @@ export default function NavBar() {
               </ListItemIcon>
               Settings
             </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
+            {localStorage.getItem("token") ? (
+              <MenuItem>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            ) : (
+              ""
+            )}
           </Menu>
         </Toolbar>
       </AppBar>

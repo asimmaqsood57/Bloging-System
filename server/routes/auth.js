@@ -40,7 +40,10 @@ router.post("/createuser", async (req, res) => {
       const authToken = await jwt.sign(data, SECRET_KEY);
 
       console.log(authToken);
-      res.json({ newUser, authToken });
+
+      let success = true;
+
+      res.json({ newUser, authToken, success });
     }
   } catch (error) {
     res.status(400).send(error);
@@ -78,7 +81,8 @@ router.post("/login", async (req, res) => {
       const authToken = await jwt.sign(data, SECRET_KEY);
 
       console.log(authToken);
-      res.json({ user, authToken });
+      let success = true;
+      res.json({ user, authToken, success });
     } else {
       res.status(400).json("invalid credentials");
     }

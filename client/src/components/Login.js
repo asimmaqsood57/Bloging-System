@@ -9,8 +9,10 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
+import { useHistory } from "react-router-dom";
 import { useState } from "react";
 export default function Login() {
+  const history = useHistory();
   const [credentials, setcredentials] = useState({
     email: "",
     password: "",
@@ -19,6 +21,44 @@ export default function Login() {
   const onChange = (e) => {
     setcredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+
+  const handleOnClick = async (e) => {
+    e.preventDefault();
+
+    console.log(
+      "you have submitted the form",
+      credentials.email,
+      credentials.name,
+      credentials.password
+    );
+
+    const data = {
+      name: credentials.name,
+      email: credentials.email,
+      password: credentials.password,
+    };
+
+    const response = await fetch("http://localhost:3001/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const json = await response.json();
+
+    console.log(json);
+
+    if (json.success) {
+      localStorage.setItem("token", json.authToken);
+
+      history.push("/");
+    }
+
+    setcredentials({ email: "", name: "", password: "" });
+  };
+
   return (
     <Container style={{ textAlign: "center" }}>
       <h1>Login</h1>
@@ -61,8 +101,12 @@ export default function Login() {
           />
         </FormControl>
         <br /> <br />
-        <Button variant="outlined" style={{ padding: "1rem" }}>
-          Login
+        <Button
+          variant="outlined"
+          onClick={handleOnClick}
+          style={{ padding: "1rem" }}
+        >
+          Logins
         </Button>
       </Box>
     </Container>

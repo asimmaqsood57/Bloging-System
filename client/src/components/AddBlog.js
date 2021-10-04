@@ -23,7 +23,8 @@ const AddBlog = () => {
     e.preventDefault();
 
     addBlog(blog.title, blog.description);
-    console.log("you have posted something");
+
+    setblog({ title: "", description: "" });
   };
 
   return (

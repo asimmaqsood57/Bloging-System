@@ -10,14 +10,18 @@ import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 export default function Singnup() {
+  const history = useHistory();
+
   const [credentials, setcredentials] = useState({
     email: "",
     name: "",
     password: "",
   });
 
-  const handleOnClick = (e) => {
+  const handleOnClick = async (e) => {
     e.preventDefault();
 
     console.log(
@@ -26,6 +30,30 @@ export default function Singnup() {
       credentials.name,
       credentials.password
     );
+
+    const data = {
+      name: credentials.name,
+      email: credentials.email,
+      password: credentials.password,
+    };
+
+    const response = await fetch("http://localhost:3001/api/auth/createuser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const json = await response.json();
+
+    console.log(json);
+
+    if (json.success) {
+      localStorage.setItem("token", json.authToken);
+
+      history.push("/");
+    }
 
     setcredentials({ email: "", name: "", password: "" });
   };
