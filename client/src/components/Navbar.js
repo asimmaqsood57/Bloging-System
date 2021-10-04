@@ -17,8 +17,16 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 export default function NavBar() {
+  const history = useHistory();
+
+  const logout = () => {
+    localStorage.removeItem("token");
+
+    history.push("/login");
+  };
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -136,7 +144,7 @@ export default function NavBar() {
               Settings
             </MenuItem>
             {localStorage.getItem("token") ? (
-              <MenuItem>
+              <MenuItem onClick={logout}>
                 <ListItemIcon>
                   <Logout fontSize="small" />
                 </ListItemIcon>

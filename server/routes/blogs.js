@@ -30,7 +30,7 @@ router.post("/addblog", fetchuser, async (req, res) => {
 
 router.get("/fetchallblogs", fetchuser, async (req, res) => {
   try {
-    const blogs = await Blog.find();
+    const blogs = await Blog.find({ user: req.user.id });
 
     res.status(200).send(blogs);
   } catch (error) {

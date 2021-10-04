@@ -21,8 +21,7 @@ const BlogState = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE0ZWQwNTA5YjM5MWQ0ZDVlYjRmNjg3In0sImlhdCI6MTYzMzEwODQ5OX0.Wefgee7TmaGzKjooxe-acPLSDIlpGpXbJPoaKvxVWpg",
+        "auth-token": localStorage.getItem("token"),
       },
     });
 
@@ -43,8 +42,7 @@ const BlogState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE0ZWQwNTA5YjM5MWQ0ZDVlYjRmNjg3In0sImlhdCI6MTYzMzEwODQ5OX0.Wefgee7TmaGzKjooxe-acPLSDIlpGpXbJPoaKvxVWpg",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify(data),
     });
